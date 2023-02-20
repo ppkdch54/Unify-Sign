@@ -16,7 +16,7 @@ let automator = singletonRequire('Automator')
 let FloatyInstance = singletonRequire('FloatyUtil')
 let BaseSignRunner = require('./BaseSignRunner.js')
 
-function SignRunner () {
+function SignRunner() {
   BaseSignRunner.call(this)
 
   let bb_farm_config = config.bb_farm_config
@@ -45,19 +45,63 @@ function SignRunner () {
 
     let _package_name = 'com.taobao.taobao'
     commonFunctions.launchPackage(_package_name)
+    let entry = widgetUtils.widgetGetOne('芭芭农场', 3000)
+    if (entry) {
+      this.displayButtonAndClick(entry, '找到了芭芭农场')
+    } else {
+      FloatyInstance.setFloatyText('没有找到芭芭农场')
+    }
 
-    // sleep(500)
-    // FloatyInstance.setFloatyText('校验是否有打开确认弹框')
-    // let confirm = widgetUtils.widgetGetOne(/^打开$/, 3000)
-    // if (confirm) {
-    //   this.displayButtonAndClick(confirm, '找到了打开按钮')
-    // } else {
-    //   FloatyInstance.setFloatyText('没有打开确认弹框')
-    // }
-
-    // this.checkForTargetImg(bb_farm_config.entry_check_alipay, '农场加载校验')
+    //用图找集肥料的位置并点击
+    this.checkForTargetImg(bb_farm_config.task_btn_taobao, '集肥料', 5)
+    this.captureAndCheckByImg(bb_farm_config.task_btn_taobao, '集肥料', null, true)
+    //处理所有的去逛逛
+    this.browseAds()
   }
 
+  this.browseAds = function () {
+    sleep(1000)
+    let hangout = widgetUtils.widgetGetOne('去逛逛')
+    let noMore = false
+    if (this.displayButtonAndClick(hangout, '去逛逛')) {
+      sleep(1000)
+      this.doBrowsing()
+      sleep(1000)
+      automator.back()
+    }
+    // else {
+    //   logUtils.warnInfo(['未找到去逛逛 可能已经完成了'])
+    //   let browseBtn = widgetUtils.widgetGetOne('去浏览')
+    //   if (this.displayButtonAndClick(browseBtn, '去浏览')) {
+    //     this.doBrowsing()
+    //   } 
+    else {
+      let finished = widgetUtils.widgetGetOne('已完成')
+      // 点进去 然后返回
+      if (this.displayButtonAndClick(finished, '已完成')) {
+        noMore = true
+        sleep(1000)
+        automator.back()
+      }
+
+    }
+    sleep(1000)
+    if (!noMore) {
+      this.browseAds()
+    }
+  }
+
+  this.doBrowsing = function (content) {
+    let startY = config.device_height - config.device_height * 0.15
+    let endY = startY - config.device_height * 0.3
+    automator.gestureDown(startY, endY)
+    let start = new Date().getTime()
+    while (widgetUtils.widgetWaiting(content || '滑动浏览得肥料', null, 5000) && new Date().getTime() - start < 20000) {
+      sleep(2000)
+      automator.gestureDown(startY, endY)
+    }
+    FloatyInstance.setFloatyText('浏览完成')
+  }
 
   // this.executeTaobaoFarm = function () {
   //   // this.launchTaobao()

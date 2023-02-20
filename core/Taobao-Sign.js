@@ -143,7 +143,7 @@ function SignRunner () {
     if (storageHelper.isHangTaskDone()) {
       this.checkCountdownBtn(true)
     } else {
-      let moreCoins = widgetUtils.widgetGetOne('\\+\\d{4}', null, true, null, m => m.boundsInside(0, 0, config.device_width / 2, config.device_height * 0.5))
+      let moreCoins = widgetUtils.widgetGetOne('\\+\\d+', null, true, null, m => m.boundsInside(0, 0, config.device_width / 2, config.device_height * 0.5))
       if (moreCoins) {
         this.checkCountdownBtn()
         this.displayButtonAndClick(moreCoins.target, moreCoins.content)

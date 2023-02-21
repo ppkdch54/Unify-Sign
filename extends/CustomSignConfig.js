@@ -8,5 +8,8 @@ module.exports = function (binder) {
    */
   binder.bindCustomSignConfig('BBFarmTB', {}, [
     
+  ]),
+  binder.bindCustomSignConfig('Douyin', {}, [
+    
   ])
 }

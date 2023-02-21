@@ -51,6 +51,8 @@ function SignRunner () {
       this.signed = true
       return
     }
+    // todo 关掉一些奇怪的提醒窗口
+
     sleep(1000)
     let screen = commonFunctions.captureScreen()
     if (screen && localOcrUtil.enabled) {

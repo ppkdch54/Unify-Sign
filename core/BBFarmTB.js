@@ -51,6 +51,8 @@ function SignRunner() {
     } else {
       FloatyInstance.setFloatyText('没有找到芭芭农场')
     }
+    // 检测是否有比赛覆盖界面
+    // 亲密值界面覆盖
 
     //用图找集肥料的位置并点击
     this.checkForTargetImg(bb_farm_config.task_btn_taobao, '集肥料', 5)

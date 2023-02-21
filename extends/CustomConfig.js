@@ -7,6 +7,12 @@ module.exports = {
       taskCode: 'BBFarmTB',
       script: 'BBFarmTB.js',
       enabled: true
+    },
+    {
+      name: '抖音',
+      taskCode: 'Douyin',
+      script: 'Douyin.js',
+      enabled: true
     }
   ]
 }
